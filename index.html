@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ABC Kids | آموزش الفبای انگلیسی</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;700;900&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <!-- منوی کناری (Hamburger) -->
+    <div class="side-menu" id="sideMenu">
+        <button class="close-btn" onclick="toggleMenu()">✖</button>
+        <h2>منوی اصلی ☰</h2>
+        <ul>
+            <li onclick="openSection('home-section')">🏠 خانه (فلش‌کارت‌ها)</li>
+            <li onclick="openSection('quiz-section')">🧠 آزمون ۵ سوالی</li>
+            <li onclick="openSection('game-section-catcher')">🎯 بازی شکار حرف</li>
+            <li onclick="openSection('game-section-memory')">🎮 بازی حافظه</li>
+        </ul>
+    </div>
+
+    <!-- دکمه باز کردن منو -->
+    <button class="menu-btn" onclick="toggleMenu()">☰</button>
+
+    <!-- ==================== بخش خانه (فلش‌کارت‌ها) ==================== -->
+    <div id="home-section">
+        <!-- هدر -->
+        <header class="main-header">
+            <div class="header-bubbles">
+                <span class="bubble"></span><span class="bubble"></span><span class="bubble"></span><span class="bubble"></span>
+            </div>
+            <div class="logo-container">
+                <span class="emoji-logo">🎈</span>
+                <h1 class="logo">ABC Kids</h1>
+                <span class="emoji-logo">🚀</span>
+            </div>
+            <p class="description">سلام قهرمان کوچولو! 👋<br>آماده‌ای با هم حروف انگلیسی رو مثل یه بازی یاد بگیریم؟ بیا شروع کنیم!</p>
+        </header>
+
+        <!-- نوار جستجو -->
+        <div class="search-bar">
+            <input type="text" id="searchInput" placeholder="🔍 جستجوی کلمه..." onkeyup="searchCards()">
+        </div>
+
+        <!-- بخش کارت‌ها -->
+        <div class="cards-container" id="cardsContainer">
+            <!-- کارت‌ها توسط جاوااسکریپت ساخته می‌شوند -->
+        </div>
+
+        <!-- دکمه‌های ناوبری برای موبایل -->
+        <div class="mobile-nav">
+            <button onclick="prevCard()" class="nav-btn">⬅️ قبلی</button>
+            <button onclick="nextCard()" class="nav-btn">بعدی ➡️</button>
+        </div>
+    </div>
+
+    <!-- ==================== بخش آزمون ==================== -->
+    <div class="section-container" id="quiz-section" style="display: none;">
+        <div class="progress-section" id="quizSection">
+            <div class="quiz-header">
+                <span class="quiz-icon">🧠</span>
+                <h3>چالش ۵ سوالی!</h3>
+            </div>
+            <div class="question-bubble">
+                <p id="questionText"></p>
+            </div>
+            <div id="optionsContainer"></div>
+        </div>
+
+        <div class="progress-section" id="reportSection">
+            <div class="quiz-header">
+                <span class="quiz-icon">🏆</span>
+                <h3>کارنامه قهرمانی</h3>
+            </div>
+            <p style="font-size: 18px; margin-bottom: 15px;">امتیاز تو: <strong id="scoreDisplay" style="color: #2ed573; font-size: 24px;">0</strong> از <span id="totalQuestions">0</span></p>
+            <button class="btn-quiz" onclick="startQuiz()">شروع بازی جدید 🎮</button>
+        </div>
+    </div>
+
+    <!-- ==================== بخش بازی‌ها ==================== -->
+    <div class="section-container" id="game-section-catcher" style="display: none;">
+        <div class="game-section">
+            <div class="game-header">
+                <h3>🎯 بازی شکار حرف!</h3>
+                <p>کدوم حباب با این حرف شروع میشه؟</p>
+            </div>
+            <div class="target-letter-display"><h2 id="targetLetter">A</h2></div>
+            <div class="bubbles-container" id="bubblesContainer"></div>
+            <div class="game-score">
+                <p>امتیاز بازی: <span id="gameScore">0</span></p>
+                <button class="btn-quiz" onclick="startLetterGame()">شروع / بازی مجدد 🔄</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="section-container" id="game-section-memory" style="display: none;">
+        <div class="game-section">
+            <div class="game-header">
+                <h3>🧠 بازی حافظه!</h3>
+                <p>دو تا کارت رو بزن که حروفشون یکی باشه.</p>
+            </div>
+            <div class="memory-grid" id="memoryGrid"></div>
+            <div class="game-score">
+                <p>امتیاز: <span id="memoryScore">0</span></p>
+                <button class="btn-quiz" onclick="startMemoryGame()">شروع مجدد 🔄</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- مودال (پنجره بازشو) -->
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h2 id="modalTitle"></h2>
+            <p id="modalWords"></p>
+            
+            <div class="audio-buttons">
+                <button class="btn-audio" onclick="speakLetter()">🔤 صدای حرف</button>
+                <button class="btn-audio" onclick="speakWord()">🔊 صدای کلمه</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== بخش راهنمای والدین ==================== -->
+    <section class="parents-guide">
+        <div class="guide-content">
+            <h2>👨‍👩‍👧‍👦 راهنمای والدین عزیز</h2>
+            <p>به <strong>ABC Kids</strong> خوش آمدید! ما این فضا را با عشق برای یادگیری الفبای زبان انگلیسی توسط فرزندان شما طراحی کرده‌ایم.</p>
+            
+            <div class="guide-features">
+                <div class="feature">
+                    <span class="feature-icon">🎮</span>
+                    <h4>یادگیری بازی‌گونه</h4>
+                    <p>کودکان با کلیک روی کارت‌ها و شنیدن تلفظ، بدون خستگی یاد می‌گیرند.</p>
+                </div>
+                
+                <div class="feature">
+                    <span class="feature-icon">🏆</span>
+                    <h4>سنجش پیشرفت</h4>
+                    <p>با آزمون‌های ۵ سوالی می‌توانید میزان یادگیری فرزندتان را بسنجید.</p>
+                </div>
+                
+                <div class="feature">
+                    <span class="feature-icon">🛡️</span>
+                    <h4>محیط امن</h4>
+                    <p>این وب‌اپ کاملاً محلی است و هیچ اطلاعاتی از فرزند شما ذخیره نمی‌کند.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== فوتر ==================== -->
+    <footer class="main-footer">
+        <div class="footer-content">
+            <div class="footer-section creator-info">
+                <h3>✨ درباره سازنده ✨</h3>
+                <p><strong>طراحی و توسعه:</strong> SAFA (برنامه‌نویس و طراح وب)</p>
+                <p><strong>تکنولوژی‌ها:</strong> HTML5, CSS3, Vanilla JavaScript</p>
+                <p>این وب‌اپ با هدف ایجاد یک تجربه یادگیری شاد و تعاملی برای نونهالان طراحی و پیاده‌سازی شده است.</p>
+            </div>
+            
+            <div class="footer-section goals-info">
+                <h3>🎯 اهداف ما</h3>
+                <p>ما در <strong>ABC Kids</strong> تلاش می‌کنیم تا یادگیری زبان انگلیسی را برای کودکان به یک ماجراجویی شیرین و بدون استرس تبدیل کنیم.</p>
+                <p style="font-style: italic; font-size: 14px; opacity: 0.8;">"آموزش امروز، ساختن آینده‌ای روشن‌تر برای فردا."</p>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>© ۱۴۰۳ ABC Kids | تمامی حقوق محفوظ است.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
